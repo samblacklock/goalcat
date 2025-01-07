@@ -3,7 +3,7 @@
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, BarChart } from "lucide-react";
+import { BarChart } from "lucide-react";
 
 interface GoalCardProps {
   id: string;
