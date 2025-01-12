@@ -1,5 +1,3 @@
-"use client";
-
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -37,7 +35,7 @@ export function GoalCard({
     <Card
       className="w-full cursor-pointer transition-all duration-300 hover:shadow-lg select-none"
       style={{ backgroundColor: color }}
-      onClick={handleIncrement}
+      // onClick={handleIncrement}
     >
       <CardHeader>
         <div className="flex justify-between items-center">
@@ -48,7 +46,7 @@ export function GoalCard({
             size="icon"
             variant="ghost"
             className="h-8 w-8 text-white hover:bg-white/20"
-            onClick={handleViewStats}
+            // onClick={handleViewStats}
           >
             <BarChart className="h-5 w-5" />
           </Button>

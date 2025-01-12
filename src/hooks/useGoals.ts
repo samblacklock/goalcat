@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
-import { useSupabaseClient } from "./useSupabaseClient";
-import { useSession } from "@clerk/nextjs";
+import { useServerSupabaseClient } from "./useServerSupabaseClient";
 
 type Goal = {
   id: string;
@@ -11,66 +9,16 @@ type Goal = {
 };
 
 export function useGoals() {
-  const [goals, setGoals] = useState<Goal[]>([]);
-  const [loading, setLoading] = useState(true);
-  const client = useSupabaseClient();
-  const { session } = useSession();
+  const client = useServerSupabaseClient();
 
-  useEffect(() => {
-    if (!session) return;
-
-    const channel = client
-      .channel("goals")
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "events",
-        },
-        (payload) => {
-          console.log("Goal updated:", payload.new);
-        }
-      )
-      .subscribe((status) => {
-        console.log("Channel status:", status);
-      });
-
-    return () => {
-      void channel.unsubscribe();
-    };
-  }, [session, client]);
-
-  useEffect(() => {
-    if (!session) return;
-    loadGoals();
-  }, [session]);
-
-  async function loadGoals() {
-    setLoading(true);
+  async function getGoals() {
     const { data, error } = await client
       .from("goals")
       .select()
       .order("created_at", { ascending: false });
 
-    if (!error) setGoals(data || []);
-    setLoading(false);
-  }
-
-  async function subscribeToGoals() {
-    // Create a function to handle inserts
-    const handleInserts = (payload) => {
-      console.log("Change received!", payload);
-    };
-
-    client
-      .channel("goals")
-      .on(
-        "postgres_changes",
-        { event: "UPDATE", schema: "public", table: "goals" },
-        handleInserts
-      )
-      .subscribe();
+    if (error) throw error;
+    return data || [];
   }
 
   async function createGoal(goal: Omit<Goal, "id" | "count">) {
@@ -80,18 +28,12 @@ export function useGoals() {
       .select()
       .single();
 
-    if (!error && data) {
-      setGoals((prev) => [data, ...prev]);
-      return data;
-    }
+    if (error) throw error;
+    return data;
   }
 
-  subscribeToGoals();
-
   return {
-    goals,
-    loading: loading || !session,
+    getGoals,
     createGoal,
-    refreshGoals: loadGoals,
   };
 }

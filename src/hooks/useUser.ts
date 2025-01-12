@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
-import { useUser as useClerkUser } from "@clerk/nextjs";
-import { useSupabaseClient } from "./useSupabaseClient";
+import { auth } from "@clerk/nextjs/server";
+import { useServerSupabaseClient } from "./useServerSupabaseClient";
 
 type DBUser = {
   id: string;
@@ -9,37 +8,22 @@ type DBUser = {
   // add other user fields
 };
 
-export function useDBUser() {
-  const [user, setUser] = useState<DBUser | null>(null);
-  const [loading, setLoading] = useState(true);
-  const { user: clerkUser } = useClerkUser();
-  const client = useSupabaseClient();
+export function useUser() {
+  const client = useServerSupabaseClient();
 
-  useEffect(() => {
-    if (!clerkUser) return;
+  async function getUser() {
+    const { userId } = await auth();
+    if (!userId) return null;
 
-    async function upsertUser() {
-      setLoading(true);
-      const { data, error } = await client
-        .from("users")
-        .upsert(
-          {
-            user_id: clerkUser?.id,
-            username: clerkUser?.username,
-          },
-          {
-            onConflict: "user_id",
-          }
-        )
-        .select()
-        .single();
+    const { data, error } = await client
+      .from("users")
+      .upsert({ user_id: userId }, { onConflict: "user_id" })
+      .select()
+      .single();
 
-      if (!error) setUser(data);
-      setLoading(false);
-    }
+    if (error) throw error;
+    return data;
+  }
 
-    upsertUser();
-  }, [clerkUser]);
-
-  return { user, loading };
+  return { getUser };
 }
