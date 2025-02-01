@@ -4,6 +4,8 @@ import { Label } from "@/components/ui/label";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { createGoal } from "@/app/actions/goals";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
 const PASTEL_COLORS = [
   "#FF8B8B", // Coral
@@ -24,7 +26,12 @@ export default function NewGoalPage() {
   return (
     <div className="max-w-2xl mx-auto p-6">
       <Card>
-        <CardHeader>
+        <CardHeader className="flex flex-row items-center gap-4">
+          <Link href="/goals">
+            <Button variant="outline" size="sm">
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+          </Link>
           <CardTitle>Create New Goal</CardTitle>
         </CardHeader>
         <CardContent>
