@@ -19,16 +19,18 @@ export default async function Home() {
         <SignOutButton />
       </div>
       <h1>Goals</h1>
-      {goals.map((goal) => (
-        <GoalCard
-          key={goal.id}
-          id={goal.id}
-          title={goal.name}
-          currentValue={goal.count}
-          targetValue={goal.target}
-          color="#000"
-        />
-      ))}
+      <div className="flex flex-col gap-4 p-4">
+        {goals.map((goal) => (
+          <GoalCard
+            key={goal.id}
+            id={goal.id}
+            title={goal.name}
+            currentValue={goal.count}
+            targetValue={goal.target}
+            color={goal?.color}
+          />
+        ))}
+      </div>
     </div>
   );
 }
