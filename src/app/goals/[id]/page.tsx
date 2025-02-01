@@ -6,6 +6,7 @@ import {
   decrementGoal,
   incrementGoal,
   getGoalEvents,
+  updateEventDescription,
 } from "@/app/actions/events";
 import { notFound } from "next/navigation";
 import { toast } from "sonner";
@@ -26,6 +27,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import EditableDescription from "@/components/editable-event-description";
 
 interface PageProps {
   params: {
@@ -115,7 +117,13 @@ export default async function GoalPage({ params, searchParams }: PageProps) {
                   <TableCell>
                     {new Date(event.timestamp).toLocaleString()}
                   </TableCell>
-                  <TableCell>{event.description}</TableCell>
+                  <TableCell>
+                    <EditableDescription
+                      eventId={event.id}
+                      initialDescription={event.description}
+                      onUpdate={updateEventDescription}
+                    />
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

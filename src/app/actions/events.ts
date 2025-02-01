@@ -54,3 +54,20 @@ export async function getGoalEvents(
   if (error) throw error;
   return { data, count };
 }
+
+export async function updateEventDescription(
+  eventId: string,
+  description: string
+) {
+  const supabase = useServerSupabaseClient();
+
+  console.log("updateEventDescription", eventId, description);
+
+  const { error } = await supabase
+    .from("events")
+    .update({ description })
+    .eq("id", eventId);
+
+  if (error) throw error;
+  // revalidatePath("/");
+}
