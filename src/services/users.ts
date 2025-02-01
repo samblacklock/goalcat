@@ -1,13 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { createServerSupabaseClient } from "@/utils/supabase/createServerSupabaseClient";
 
-type DBUser = {
-  id: string;
-  user_id: string;
-  username: string;
-  // add other user fields
-};
-
 const client = createServerSupabaseClient();
 
 export async function getUser() {
