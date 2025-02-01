@@ -53,7 +53,9 @@ export async function getGoal(id: string) {
   return goal;
 }
 
-export async function deleteGoal(id: string) {
+export async function deleteGoal(
+  id: string
+): Promise<{ success: boolean; error?: Error }> {
   const supabase = createServerSupabaseClient();
 
   try {
@@ -65,6 +67,9 @@ export async function deleteGoal(id: string) {
     return { success: true };
   } catch (error) {
     console.error("Error deleting goal:", error);
-    return { success: false, error };
+    return {
+      success: false,
+      error: error instanceof Error ? error : new Error("Unknown error"),
+    };
   }
 }

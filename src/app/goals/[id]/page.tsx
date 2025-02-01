@@ -7,16 +7,15 @@ import { ArrowLeft } from "lucide-react";
 import { GoalProgressCard } from "@/components/goal-progress-card";
 import { EventsHistory } from "@/components/events-history";
 
-interface PageProps {
-  params: {
-    id: string;
-  };
-  searchParams: {
-    page?: string;
-  };
-}
+type Params = Promise<{ id: string }>;
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
-export default async function GoalPage({ params, searchParams }: PageProps) {
+export default async function GoalPage(props: {
+  params: Params;
+  searchParams: SearchParams;
+}) {
+  const params = await props.params;
+  const searchParams = await props.searchParams;
   const currentPage = Number(searchParams.page) || 1;
   const pageSize = 10;
 
