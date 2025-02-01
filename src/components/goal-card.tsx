@@ -23,12 +23,17 @@ export function GoalCard({
 
   return (
     <Card
-      className="w-full cursor-pointer transition-all duration-300 hover:shadow-lg select-none flex gap-2"
-      style={{ backgroundColor: color }}
+      className="w-full cursor-pointer transition-all duration-300 hover:shadow-lg select-none flex gap-2 bg-gradient-to-br from-[var(--card-color)] to-[var(--card-color-dark)]"
+      style={
+        {
+          "--card-color": color,
+          "--card-color-dark": color + "88",
+        } as React.CSSProperties
+      }
     >
       <Link href={`/goals/${id}`} className="block w-full">
         <CardHeader>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center drop-shadow-sm">
             <CardTitle className="text-white text-2xl font-bold truncate w-4/5">
               {title}
             </CardTitle>
@@ -45,6 +50,7 @@ export function GoalCard({
       </Link>
       <GoalCardActions
         id={id}
+        name={title}
         onIncrement={incrementGoal}
         onDecrement={decrementGoal}
       />
