@@ -18,7 +18,7 @@ import {
 interface DeleteGoalButtonProps {
   goalId: string;
   goalName: string;
-  onDelete: (id: string) => Promise<{ success: boolean; error?: any }>;
+  onDelete: (id: string) => Promise<{ success: boolean; error?: Error }>;
 }
 
 export function DeleteGoalButton({
@@ -50,8 +50,8 @@ export function DeleteGoalButton({
         <AlertDialogHeader>
           <AlertDialogTitle>Delete Goal</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete "{goalName}"? This action cannot be
-            undone.
+            Are you sure you want to delete &ldquo;{goalName}&rdquo;? This
+            action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
