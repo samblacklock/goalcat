@@ -1,12 +1,12 @@
 "use server";
 
-import { useServerSupabaseClient } from "@/hooks/useServerSupabaseClient";
+import { createServerSupabaseClient } from "@/utils/supabase/createServerSupabaseClient";
 import { revalidatePath } from "next/cache";
 
 export type EventType = "INCREMENT" | "DECREMENT";
 
 export async function incrementGoal(goalId: string) {
-  const supabase = useServerSupabaseClient();
+  const supabase = createServerSupabaseClient();
 
   const { error } = await supabase.from("events").insert({
     goal_id: goalId,
@@ -20,7 +20,7 @@ export async function incrementGoal(goalId: string) {
 }
 
 export async function decrementGoal(goalId: string) {
-  const supabase = useServerSupabaseClient();
+  const supabase = createServerSupabaseClient();
 
   const { error } = await supabase.from("events").insert({
     goal_id: goalId,
@@ -38,7 +38,7 @@ export async function getGoalEvents(
   page: number = 1,
   pageSize: number = 10
 ) {
-  const supabase = useServerSupabaseClient();
+  const supabase = createServerSupabaseClient();
 
   const from = (page - 1) * pageSize;
   const to = from + pageSize - 1;
@@ -58,9 +58,7 @@ export async function updateEventDescription(
   eventId: string,
   description: string
 ) {
-  const supabase = useServerSupabaseClient();
-
-  console.log("updateEventDescription", eventId, description);
+  const supabase = createServerSupabaseClient();
 
   const { error } = await supabase
     .from("events")

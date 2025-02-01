@@ -10,7 +10,6 @@ interface GoalCardProps {
 }
 
 export function GoalCard({ goal }: GoalCardProps) {
-  console.log("goal", goal);
   const progress = (goal.count / goal.target) * 100;
 
   return (

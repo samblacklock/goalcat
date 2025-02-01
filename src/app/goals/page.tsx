@@ -1,16 +1,12 @@
 import { AddGoalButton } from "@/components/add-goal-button";
 import { GoalCard } from "@/components/goal-card";
 import { SignOutButton } from "@/components/sign-out-button";
-import { useGoals } from "@/hooks/useGoals";
-import { useUser } from "@/hooks/useUser";
+import { getGoals } from "@/services/goals";
+import { getUser } from "@/services/users";
 import Link from "next/link";
 
 export default async function GoalsPage() {
-  const { getGoals } = useGoals();
-  const { getUser } = useUser();
-
-  const goals = await getGoals();
-  const user = await getUser();
+  const [goals, user] = await Promise.all([getGoals(), getUser()]);
 
   return (
     <div>

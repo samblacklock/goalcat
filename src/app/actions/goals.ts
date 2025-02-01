@@ -1,13 +1,12 @@
 "use server";
 
-import { useServerSupabaseClient } from "@/hooks/useServerSupabaseClient";
+import { createServerSupabaseClient } from "@/utils/supabase/createServerSupabaseClient";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { useUser } from "@/hooks/useUser";
+import { getUser } from "@/services/users";
 
 export async function createGoal(formData: FormData) {
-  const supabase = useServerSupabaseClient();
-  const { getUser } = useUser();
+  const supabase = createServerSupabaseClient();
 
   const user = await getUser();
   if (!user) throw new Error("User not found");
@@ -35,7 +34,7 @@ export async function createGoal(formData: FormData) {
 }
 
 export async function getGoal(id: string) {
-  const supabase = useServerSupabaseClient();
+  const supabase = createServerSupabaseClient();
 
   const { data: goal, error } = await supabase
     .from("goals")
@@ -55,7 +54,7 @@ export async function getGoal(id: string) {
 }
 
 export async function deleteGoal(id: string) {
-  const supabase = useServerSupabaseClient();
+  const supabase = createServerSupabaseClient();
 
   try {
     const { error } = await supabase.from("goals").delete().eq("id", id);
