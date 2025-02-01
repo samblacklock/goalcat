@@ -17,23 +17,43 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 interface PageProps {
   params: {
     id: string;
   };
+  searchParams: {
+    page?: string;
+  };
 }
 
-export default async function GoalPage({ params }: PageProps) {
+export default async function GoalPage({ params, searchParams }: PageProps) {
+  const currentPage = Number(searchParams.page) || 1;
+  const pageSize = 10;
+
   let goal;
   let events;
+  let totalEvents;
   try {
     goal = await getGoal(params.id);
-    events = await getGoalEvents(params.id);
+    const eventsData = await getGoalEvents(params.id, currentPage, pageSize);
+    events = eventsData.data;
+    totalEvents = eventsData.count;
   } catch (error) {
     console.log(error);
     notFound();
   }
+
+  const totalPages = Math.ceil((totalEvents || 0) / pageSize);
 
   const progress = (goal.current / goal.target) * 100;
 
@@ -100,6 +120,84 @@ export default async function GoalPage({ params }: PageProps) {
               ))}
             </TableBody>
           </Table>
+
+          {totalPages > 1 && (
+            <div className="mt-4">
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      href={`/goals/${params.id}?page=${currentPage - 1}`}
+                      aria-disabled={currentPage <= 1}
+                      className={
+                        currentPage <= 1 ? "pointer-events-none opacity-50" : ""
+                      }
+                    />
+                  </PaginationItem>
+
+                  {/* First page */}
+                  <PaginationItem>
+                    <PaginationLink
+                      href={`/goals/${params.id}?page=1`}
+                      isActive={currentPage === 1}
+                    >
+                      1
+                    </PaginationLink>
+                  </PaginationItem>
+
+                  {/* Show ellipsis if there are many pages before current */}
+                  {currentPage > 3 && (
+                    <PaginationItem>
+                      <PaginationEllipsis />
+                    </PaginationItem>
+                  )}
+
+                  {/* Current page and surrounding pages */}
+                  {currentPage > 2 && currentPage < totalPages && (
+                    <PaginationItem>
+                      <PaginationLink
+                        href={`/goals/${params.id}?page=${currentPage}`}
+                        isActive={true}
+                      >
+                        {currentPage}
+                      </PaginationLink>
+                    </PaginationItem>
+                  )}
+
+                  {/* Show ellipsis if there are many pages after current */}
+                  {currentPage < totalPages - 2 && (
+                    <PaginationItem>
+                      <PaginationEllipsis />
+                    </PaginationItem>
+                  )}
+
+                  {/* Last page */}
+                  {totalPages > 1 && (
+                    <PaginationItem>
+                      <PaginationLink
+                        href={`/goals/${params.id}?page=${totalPages}`}
+                        isActive={currentPage === totalPages}
+                      >
+                        {totalPages}
+                      </PaginationLink>
+                    </PaginationItem>
+                  )}
+
+                  <PaginationItem>
+                    <PaginationNext
+                      href={`/goals/${params.id}?page=${currentPage + 1}`}
+                      aria-disabled={currentPage >= totalPages}
+                      className={
+                        currentPage >= totalPages
+                          ? "pointer-events-none opacity-50"
+                          : ""
+                      }
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

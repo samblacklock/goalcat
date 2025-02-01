@@ -34,15 +34,23 @@ export async function decrementGoal(goalId: string) {
   revalidatePath("/");
 }
 
-export async function getGoalEvents(goalId: string) {
+export async function getGoalEvents(
+  goalId: string,
+  page: number = 1,
+  pageSize: number = 10
+) {
   const supabase = useServerSupabaseClient();
 
-  const { data, error } = await supabase
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
+
+  const { data, error, count } = await supabase
     .from("events")
-    .select("*")
+    .select("*", { count: "exact" })
     .eq("goal_id", goalId)
-    .order("timestamp", { ascending: false });
+    .order("timestamp", { ascending: false })
+    .range(from, to);
 
   if (error) throw error;
-  return data;
+  return { data, count };
 }
