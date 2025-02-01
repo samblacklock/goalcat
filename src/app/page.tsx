@@ -1,4 +1,5 @@
 import { GoalCard } from "@/components/goal-card";
+import { SignOutButton } from "@/components/sign-out-button";
 import { useGoals } from "@/hooks/useGoals";
 import { useUser } from "@/hooks/useUser";
 
@@ -9,9 +10,14 @@ export default async function Home() {
   const goals = await getGoals();
   const user = await getUser();
 
+  console.log(goals, user);
+
   return (
     <div>
-      <h1>User: {user?.username}</h1>
+      <div className="flex items-center justify-between">
+        <h1>User: {user?.username}</h1>
+        <SignOutButton />
+      </div>
       <h1>Goals</h1>
       {goals.map((goal) => (
         <GoalCard
