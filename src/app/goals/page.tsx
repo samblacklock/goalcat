@@ -12,15 +12,12 @@ export default async function GoalsPage() {
   const goals = await getGoals();
   const user = await getUser();
 
-  console.log(goals, user);
-
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <h1>User: {user?.username}</h1>
+      <div className="flex items-center justify-between p-4">
+        <h1>Welcome, {user?.username}</h1>
         <SignOutButton />
       </div>
-      <h1>Goals</h1>
       <div className="flex flex-col gap-4 p-4">
         {goals &&
           goals.map((goal) => (

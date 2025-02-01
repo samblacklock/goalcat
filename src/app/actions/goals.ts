@@ -3,7 +3,6 @@
 import { useServerSupabaseClient } from "@/hooks/useServerSupabaseClient";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { EventType } from "./goals.types";
 import { useUser } from "@/hooks/useUser";
 
 export async function createGoal(formData: FormData) {

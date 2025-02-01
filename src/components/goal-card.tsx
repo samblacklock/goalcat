@@ -3,23 +3,18 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { GoalCardActions } from "./goal-card-actions";
 import { incrementGoal, decrementGoal } from "@/app/actions/events";
 import Link from "next/link";
+import { Goal } from "@/types";
 
-interface GoalCardProps {
-  id: string;
-  title: string;
-  currentValue: number;
-  targetValue: number;
-  color?: string;
-}
+type GoalCardProps = Pick<Goal, "id" | "name" | "count" | "target" | "color">;
 
 export function GoalCard({
   id,
-  title,
-  currentValue,
-  targetValue,
+  name,
+  count,
+  target,
   color = "#000000",
 }: GoalCardProps) {
-  const progress = (currentValue / targetValue) * 100;
+  const progress = (count / target) * 100;
 
   return (
     <Card
@@ -35,7 +30,7 @@ export function GoalCard({
         <CardHeader>
           <div className="flex justify-between items-center drop-shadow-sm">
             <CardTitle className="text-white text-2xl font-bold truncate w-4/5">
-              {title}
+              {name}
             </CardTitle>
           </div>
         </CardHeader>
@@ -43,14 +38,14 @@ export function GoalCard({
           <Progress value={progress} className="w-full h-4 bg-white/30" />
           <div className="mt-4 flex justify-between items-center text-white">
             <p className="text-lg font-semibold">
-              {currentValue} / {targetValue}
+              {count} / {target}
             </p>
           </div>
         </CardContent>
       </Link>
       <GoalCardActions
         id={id}
-        name={title}
+        name={name}
         onIncrement={incrementGoal}
         onDecrement={decrementGoal}
       />

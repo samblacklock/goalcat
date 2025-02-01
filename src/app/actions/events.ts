@@ -2,9 +2,8 @@
 
 import { useServerSupabaseClient } from "@/hooks/useServerSupabaseClient";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-import { EventType } from "./goals.types";
-import { useUser } from "@/hooks/useUser";
+
+export type EventType = "INCREMENT" | "DECREMENT";
 
 export async function incrementGoal(goalId: string) {
   const supabase = useServerSupabaseClient();
@@ -48,7 +47,7 @@ export async function getGoalEvents(
     .from("events")
     .select("*", { count: "exact" })
     .eq("goal_id", goalId)
-    .order("timestamp", { ascending: false })
+    .order("created_at", { ascending: false })
     .range(from, to);
 
   if (error) throw error;
