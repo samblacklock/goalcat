@@ -19,17 +19,7 @@ export default async function GoalsPage() {
         <SignOutButton />
       </div>
       <div className="flex flex-col gap-4 p-4">
-        {goals &&
-          goals.map((goal) => (
-            <GoalCard
-              key={goal.id}
-              id={goal.id}
-              title={goal.name}
-              currentValue={goal.count}
-              targetValue={goal.target}
-              color={goal?.color}
-            />
-          ))}
+        {goals && goals.map((goal) => <GoalCard key={goal.id} goal={goal} />)}
         {goals && goals.length === 0 && (
           <p>No goals found. Add a goal to get started.</p>
         )}

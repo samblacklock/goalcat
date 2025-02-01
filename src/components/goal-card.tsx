@@ -5,32 +5,29 @@ import { incrementGoal, decrementGoal } from "@/app/actions/events";
 import Link from "next/link";
 import { Goal } from "@/types";
 
-type GoalCardProps = Pick<Goal, "id" | "name" | "count" | "target" | "color">;
+interface GoalCardProps {
+  goal: Goal;
+}
 
-export function GoalCard({
-  id,
-  name,
-  count,
-  target,
-  color = "#000000",
-}: GoalCardProps) {
-  const progress = (count / target) * 100;
+export function GoalCard({ goal }: GoalCardProps) {
+  console.log("goal", goal);
+  const progress = (goal.count / goal.target) * 100;
 
   return (
     <Card
       className="w-full cursor-pointer transition-all duration-300 hover:shadow-lg select-none flex gap-2 bg-gradient-to-br from-[var(--card-color)] to-[var(--card-color-dark)]"
       style={
         {
-          "--card-color": color,
-          "--card-color-dark": color + "88",
+          "--card-color": goal.color,
+          "--card-color-dark": goal.color + "88",
         } as React.CSSProperties
       }
     >
-      <Link href={`/goals/${id}`} className="block w-full">
+      <Link href={`/goals/${goal.id}`} className="block w-full">
         <CardHeader>
           <div className="flex justify-between items-center drop-shadow-sm">
             <CardTitle className="text-white text-2xl font-bold truncate w-4/5">
-              {name}
+              {goal.name}
             </CardTitle>
           </div>
         </CardHeader>
@@ -38,14 +35,14 @@ export function GoalCard({
           <Progress value={progress} className="w-full h-4 bg-white/30" />
           <div className="mt-4 flex justify-between items-center text-white">
             <p className="text-lg font-semibold">
-              {count} / {target}
+              {goal.count} / {goal.target}
             </p>
           </div>
         </CardContent>
       </Link>
       <GoalCardActions
-        id={id}
-        name={name}
+        id={goal.id}
+        name={goal.name}
         onIncrement={incrementGoal}
         onDecrement={decrementGoal}
       />

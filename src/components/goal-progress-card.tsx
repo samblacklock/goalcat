@@ -2,7 +2,9 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { GoalCardActions } from "@/components/goal-card-actions";
 import { decrementGoal, incrementGoal } from "@/app/actions/events";
+import { deleteGoal } from "@/app/actions/goals";
 import { Goal } from "@/types";
+import { DeleteGoalButton } from "./delete-goal-button";
 
 interface GoalProgressCardProps {
   goal: Goal;
@@ -21,11 +23,18 @@ export function GoalProgressCard({ goal }: GoalProgressCardProps) {
         } as React.CSSProperties
       }
     >
-      <CardHeader>
-        <CardTitle className="text-4xl font-bold">{goal.name}</CardTitle>
-        <span className="text-sm opacity-75">
-          Created on {new Date(goal.created_at).toLocaleDateString()}
-        </span>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <div>
+          <CardTitle className="text-4xl font-bold">{goal.name}</CardTitle>
+          <span className="text-sm opacity-75">
+            Created on {new Date(goal.created_at).toLocaleDateString()}
+          </span>
+        </div>
+        <DeleteGoalButton
+          goalId={goal.id}
+          goalName={goal.name}
+          onDelete={deleteGoal}
+        />
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="flex items-end justify-between">

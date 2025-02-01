@@ -53,3 +53,19 @@ export async function getGoal(id: string) {
 
   return goal;
 }
+
+export async function deleteGoal(id: string) {
+  const supabase = useServerSupabaseClient();
+
+  try {
+    const { error } = await supabase.from("goals").delete().eq("id", id);
+
+    if (error) throw error;
+
+    revalidatePath("/goals");
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting goal:", error);
+    return { success: false, error };
+  }
+}
