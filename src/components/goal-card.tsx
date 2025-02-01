@@ -1,7 +1,7 @@
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { GoalCardActions } from "./goal-card-actions";
-import { incrementGoal, decrementGoal } from "@/app/actions/goals";
+import { incrementGoal, decrementGoal } from "@/app/actions/events";
 import Link from "next/link";
 
 interface GoalCardProps {

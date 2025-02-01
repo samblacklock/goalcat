@@ -6,34 +6,6 @@ import { redirect } from "next/navigation";
 import { EventType } from "./goals.types";
 import { useUser } from "@/hooks/useUser";
 
-export async function incrementGoal(goalId: string) {
-  const supabase = useServerSupabaseClient();
-
-  const { error } = await supabase.from("events").insert({
-    goal_id: goalId,
-    type: "INCREMENT" as EventType,
-    description: "Incremented goal",
-  });
-
-  if (error) throw new Error(error.message);
-
-  revalidatePath("/");
-}
-
-export async function decrementGoal(goalId: string) {
-  const supabase = useServerSupabaseClient();
-
-  const { error } = await supabase.from("events").insert({
-    goal_id: goalId,
-    type: "DECREMENT" as EventType,
-    description: "Decremented goal",
-  });
-
-  if (error) throw new Error(error.message);
-
-  revalidatePath("/");
-}
-
 export async function createGoal(formData: FormData) {
   const supabase = useServerSupabaseClient();
   const { getUser } = useUser();
@@ -61,4 +33,24 @@ export async function createGoal(formData: FormData) {
 
   revalidatePath("/");
   redirect("/");
+}
+
+export async function getGoal(id: string) {
+  const supabase = useServerSupabaseClient();
+
+  const { data: goal, error } = await supabase
+    .from("goals")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    throw new Error("Failed to fetch goal");
+  }
+
+  if (!goal) {
+    throw new Error("Goal not found");
+  }
+
+  return goal;
 }
