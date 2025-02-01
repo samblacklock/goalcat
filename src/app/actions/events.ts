@@ -17,7 +17,7 @@ export async function incrementGoal(goalId: string) {
 
   if (error) throw new Error(error.message);
 
-  revalidatePath("/");
+  revalidatePath("/goals");
 }
 
 export async function decrementGoal(goalId: string) {
@@ -31,7 +31,7 @@ export async function decrementGoal(goalId: string) {
 
   if (error) throw new Error(error.message);
 
-  revalidatePath("/");
+  revalidatePath("/goals");
 }
 
 export async function getGoalEvents(
@@ -69,5 +69,5 @@ export async function updateEventDescription(
     .eq("id", eventId);
 
   if (error) throw error;
-  // revalidatePath("/");
+  revalidatePath("/goals");
 }
