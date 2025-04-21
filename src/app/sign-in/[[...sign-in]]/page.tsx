@@ -77,8 +77,8 @@ export default function SignInPage() {
                         required
                         asChild
                         autoComplete="email"
-                        name="email"
-                        id="email"
+                        name="identifier"
+                        id="identifier"
                       >
                         <Input />
                       </Clerk.Input>
