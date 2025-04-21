@@ -52,17 +52,17 @@ export function GoalCardActions({
 
   return (
     <div
-      className="flex flex-col justify-center items-center w-32"
+      className="flex flex-col justify-center items-center w-32 h-full"
       onClick={(e) => e.stopPropagation()}
     >
       {isLoading ? (
-        <Loader2 className="h-6 w-6 animate-spin text-white" />
+        <Loader2 className="h-6 w-6 animate-spin text-black" />
       ) : (
         <>
           <Button
             size="lg"
             variant="secondary"
-            className="h-10 w-10 hover:bg-white/30 rounded-none border-b border-white/90 flex-1 w-full opacity-50"
+            className="h-1/2 hover:bg-white/30 rounded-none border-b border-white/90 flex-1 w-full opacity-50"
             onClick={handleIncrement}
             disabled={isLoading}
           >
@@ -71,7 +71,7 @@ export function GoalCardActions({
           <Button
             size="lg"
             variant="secondary"
-            className="h-10 w-10 hover:bg-white/30 rounded-none flex-1 w-full opacity-50"
+            className="h-1/2 hover:bg-white/30 rounded-none flex-1 w-full opacity-50"
             onClick={handleDecrement}
             disabled={isLoading}
           >

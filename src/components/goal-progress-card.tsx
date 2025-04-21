@@ -37,7 +37,7 @@ export function GoalProgressCard({ goal }: GoalProgressCardProps) {
         />
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="flex items-end justify-between">
+        <div className="flex items-stretch justify-between h-32">
           <div className="space-y-2">
             <h2 className="text-2xl font-semibold">Progress</h2>
             <p className="text-6xl font-bold">

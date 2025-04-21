@@ -25,14 +25,14 @@ export function GoalCard({ goal }: GoalCardProps) {
       <Link href={`/goals/${goal.id}`} className="block w-full">
         <CardHeader>
           <div className="flex justify-between items-center drop-shadow-sm">
-            <CardTitle className="text-white text-2xl font-bold truncate w-4/5">
+            <CardTitle className="text-black text-2xl font-bold truncate w-4/5">
               {goal.name}
             </CardTitle>
           </div>
         </CardHeader>
         <CardContent>
           <Progress value={progress} className="w-full h-4 bg-white/30" />
-          <div className="mt-4 flex justify-between items-center text-white">
+          <div className="mt-4 flex justify-between items-center text-black">
             <p className="text-lg font-semibold">
               {goal.count} / {goal.target}
             </p>

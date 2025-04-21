@@ -13,8 +13,20 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Icons } from "@/components/ui/icons";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useAuth } from "@clerk/nextjs";
 
 export default function SignInPage() {
+  const router = useRouter();
+  const { isSignedIn } = useAuth();
+
+  useEffect(() => {
+    if (isSignedIn) {
+      router.push("/goals");
+    }
+  }, [isSignedIn, router]);
+
   return (
     <div className="grid w-full grow items-center px-4 sm:justify-center">
       <SignIn.Root>
@@ -60,7 +72,14 @@ export default function SignInPage() {
                       <Clerk.Label asChild>
                         <Label>Email address</Label>
                       </Clerk.Label>
-                      <Clerk.Input type="email" required asChild>
+                      <Clerk.Input
+                        type="email"
+                        required
+                        asChild
+                        autoComplete="email"
+                        name="email"
+                        id="email"
+                      >
                         <Input />
                       </Clerk.Input>
                       <Clerk.FieldError className="block text-sm text-destructive" />
